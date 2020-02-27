@@ -20,4 +20,4 @@ The core of the drone is an Arduino Nano, connected to:
 - the batteries for power supply
 - a voltage divider circuit for battery monitoring
 
-<img src="doc/schema_elec.png" alt="schema_elec" width="200"/>
+<img src="doc/schema_elec.png" alt="schema_elec" width="400"/>
