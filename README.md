@@ -19,3 +19,5 @@ The core of the drone is an Arduino Nano, connected to:
 - four MOSFET transistors to send power to the motors
 - the batteries for power supply
 - a voltage divider circuit for battery monitoring
+
+[schema_elec](doc/schema_elec.png)
