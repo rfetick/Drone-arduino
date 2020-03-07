@@ -4,6 +4,7 @@ extern int last_val;
 
 byte readPoten(){
   int poten = analogRead(POTEN_PIN);
+  poten = min(max(poten,POTEN_MIN),POTEN_MAX);
   byte val = map(poten,POTEN_MIN,POTEN_MAX,0,255);
   return val;
 }
@@ -16,7 +17,7 @@ void ask_init_poten(){
     Serial.print(val);
     Serial.println(")");
     val = readPoten();
-    delay(200);
+    delay(500);
   }
 
   Serial.println(F("Ready to transmit data"));

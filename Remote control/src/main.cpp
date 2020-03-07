@@ -24,6 +24,7 @@ void setup() {
   HC12.begin(RADIO_BAUD);
   pinMode(LED_BUILTIN,OUTPUT);
   pinMode(POTEN_PIN,INPUT);
+  pinMode(BUTTON_PIN,INPUT);
   ask_init_poten();
 }
 
@@ -44,5 +45,12 @@ void loop() {
       Serial.println("Error retrieving serial");
     }
     while(Serial.available()){ Serial.read(); } // empty serial
+  }
+
+  val = digitalRead(BUTTON_PIN);
+  if(val){
+    // Should send here stop command to drone
+    write_message(10, 1); // error message
+    Serial.println("Button pressed");
   }
 }

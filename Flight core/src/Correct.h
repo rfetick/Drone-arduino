@@ -14,6 +14,7 @@ extern byte MOTOR_SPEED[4];
 extern byte MOTOR_SPEED_AVG;
 extern byte MOTOR_OFFSET[4];
 extern int DRONE_STATUS;
+extern int ERR;
 
 /*** CLASS DEFINITION ***/
 
@@ -33,7 +34,7 @@ class PIDcorrector{
     if(DRONE_STATUS==DRONE_STATUS_FLIGHT){
       this->sum_err += err*dt;
     }else{
-      this->sum_err = 0.0; // no integration if drone is on ground
+      this->sum_err = 0.0; // no integration if drone is on the ground
     }
     err = this->Kp * err + this->Ki * this->sum_err - this->Kd * state_speed;
     return err;
@@ -48,17 +49,21 @@ PIDcorrector Yaw_Corr(C_YAW_KP, C_YAW_KI, C_YAW_KD);
 PIDcorrector X_Corr(C_XY_KP, C_XY_KI, 0.0);
 PIDcorrector Y_Corr(C_XY_KP, C_XY_KI, 0.0);
 
-void UPDATE_CORRECTION(float DT){
+void UPDATE_CORRECTION(float dt){
+  ERR = NO_ERROR;
   // Compute angles to correct for linear acceleration and put them into COMMAND angles
-  COMMAND[1] = X_Corr.compute(0.0,STATE[6],0.0,DT);
-  COMMAND[2] = Y_Corr.compute(0.0,STATE[7],0.0,DT);
+  COMMAND[1] = X_Corr.compute(0.0,STATE[6],0.0,dt);
+  COMMAND[2] = Y_Corr.compute(0.0,STATE[7],0.0,dt);
 
   // Compute motor command from the MPU6050 data
-  float Kyaw   = 0.0; //  Yaw_Corr.compute(COMMAND[0],STATE[0],STATE[3],DT); // check +--+ or -++- signs
-  float Kpitch = Pitch_Corr.compute(COMMAND[1],STATE[1],STATE[4],DT);
-  float Kroll  =  Roll_Corr.compute(COMMAND[2],STATE[2],STATE[5],DT);
+  float Kyaw   = 0.0; //  Yaw_Corr.compute(COMMAND[0],STATE[0],STATE[3],dt); // check +--+ or -++- signs
+  float Kpitch = Pitch_Corr.compute(COMMAND[1],STATE[1],STATE[4],dt);
+  float Kroll  =  Roll_Corr.compute(COMMAND[2],STATE[2],STATE[5],dt);
 
-  // The +- sign depends on motor position on the drone
+  if(MOTOR_SPEED_AVG>MOT_SAT_AVG){ ERR = SIMPLE_ERROR; }
+  MOTOR_SPEED_AVG = min(MOTOR_SPEED_AVG,MOT_SAT_AVG); // saturate average
+
+  // The +- sign depends on the motor position on the drone
   MOTOR_SPEED[0] = min(max(MOTOR_SPEED_AVG + MOTOR_OFFSET[0] + Kroll + Kpitch + Kyaw,0),MOT_SAT_MAX);
   MOTOR_SPEED[1] = min(max(MOTOR_SPEED_AVG + MOTOR_OFFSET[1] - Kroll + Kpitch - Kyaw,0),MOT_SAT_MAX);
   MOTOR_SPEED[2] = min(max(MOTOR_SPEED_AVG + MOTOR_OFFSET[2] + Kroll - Kpitch - Kyaw,0),MOT_SAT_MAX);
