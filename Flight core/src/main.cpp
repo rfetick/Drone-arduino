@@ -79,6 +79,9 @@ void raise_fatal_error(){
   // Fatal error turns off definitely the motors, and enters in infinite error loop
   for(int i=0;i<4;i++){ MOTOR_SPEED[i] = 0; }
   MOTOR_SET();
+
+  delay(10); // wait before sending data
+  RADIO_EMIT(10, 1); // send to radio an error message
   while(true){
     raise_error();
     process_error();
@@ -125,7 +128,7 @@ void loop() {
 
   UPDATE_HOUSEKEEPING();
   if(ERR!=NO_ERROR){
-    //if(VERBOSE){Serial.println(F("ERROR: Housekeeping"));}
+    if(VERBOSE){Serial.println(F("ERROR: Housekeeping"));}
     raise_error();
   }
 

@@ -3,29 +3,31 @@
 
 // SERIAL PRINT
 #define BAUDRATE 250000
-#define VERBOSE  true
+#define VERBOSE  false
 
 // DRONE STATUS
 #define DRONE_STATUS_LANDED  0
 #define DRONE_STATUS_FLIGHT  1
 
 // PID CORRECTORS PITCH ROLL
-#define C_PR_KP    2.0  // [bit/deg]
-#define C_PR_KI    1e-9 // [bit/deg/us]
-#define C_PR_KD    3e-1 // [bit/(deg/s)]
+#define C_PR_KP        2.0  // [bit/deg]
+#define C_PR_KI        1e-9 // [bit/deg/us]
+#define C_PR_KD        3e-1 // [bit/(deg/s)]
 
 // PID CORRECTOR YAW
-#define C_YAW_KP   0.5   // [bit/deg]
-#define C_YAW_KI   1e-10 // [bit/deg/us]
-#define C_YAW_KD   1e-1  // [bit/(deg/s)]
+#define ENABLE_YAW_PID false // precompiler option to enable or not yaw correction
+#define C_YAW_KP       0.2  // [bit/deg]
+#define C_YAW_KI       0.0  // 1e-11 // [bit/deg/us]
+#define C_YAW_KD       1.0  // [bit/(deg/s)]
 
 // PID CORRECTORS LINEAR ACCELERATION
-#define C_XY_KP    20.0  // [deg/gravity]
-#define C_XY_KI    0.0 // 1e-8 // [deg/gravity/us]
+#define ENABLE_XY_PID  true  // precompiler option to enable or not XY correction
+#define C_XY_KP        40.0 // 20.0  // [deg/gravity]
+#define C_XY_KI        0.0 // 1e-9 // [deg/gravity/us]
 
 // MOTOR SATURATION LEVEL [otherwise motor command is between 0 and 255]
-#define MOT_SAT_AVG   170 // motor avg saturation, must be lower than motor max saturation to keep some dynamics for flight control
-#define MOT_SAT_MAX   200 // motor saturation = (motor average + command)_max
+#define MOT_SAT_AVG    170 // motor avg saturation, must be lower than motor max saturation to keep some dynamics for flight control
+#define MOT_SAT_MAX    200 // motor saturation = (motor average + command)_max
 
 // HOUSEKEEPING
 #define PIN_V_CHECK        A6     // pin for the measurement of the battery voltage
@@ -46,6 +48,7 @@
 #define RADIO_PIN_TX       A2   // radio transmission pin
 #define RADIO_BAUD         9600 // must be similar to remote control radio baud
 #define MSG_LEN            3    // [target,value,check]
+//#define MSG_DELAY          60   // [ms] delay between two consecutive messages (fatal error only)
 
 // MPU6050
 #define DEG2RAD            0.01745329252 // [rad/°] conversion from degree to radian

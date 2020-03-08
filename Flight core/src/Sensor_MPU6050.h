@@ -5,7 +5,7 @@
 
 #include <Arduino.h>
 
-#include <MPU6050_tockn.h>
+#include "MPU6050_tockn.h"
 #include "drone_define.h"
 
 extern float STATE[9];
@@ -14,12 +14,14 @@ extern int ERR;
 MPU6050 mpu6050(Wire);
 
 void INIT_MPU6050(){
-  ERR = (int)mpu6050.begin();
+  ERR = NO_ERROR;
+  mpu6050.begin();
   mpu6050.calcGyroOffsets();
 }
 
 void UPDATE_MPU6050(){
-  ERR = (int)mpu6050.update();
+  ERR = NO_ERROR;
+  mpu6050.update();
   STATE[0] =  mpu6050.getAngleZ();
   STATE[1] = -mpu6050.getAngleY();
   STATE[2] =  mpu6050.getAngleX();
