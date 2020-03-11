@@ -34,11 +34,11 @@ void INIT_HOUSEKEEPING(){
 
 void HOUSEKEEPING_PRINT_STATE(){
   Serial.print(F("COM: "));
-  Serial.print(COMMAND[1]);
+  Serial.print(COMMAND[1],1);
   Serial.print(F(" "));
-  Serial.print(COMMAND[2]);
-  Serial.print(F(" AVG: "));
-  Serial.print(MOTOR_SPEED_AVG);
+  Serial.print(COMMAND[2],1);
+  //Serial.print(F(" AVG: "));
+  //Serial.print(MOTOR_SPEED_AVG);
   Serial.print(F(" MOT: "));
   for(int i=0;i<4;i++){
     Serial.print(MOTOR_SPEED[i]-MOTOR_SPEED_AVG);

@@ -22,8 +22,8 @@
 
 // PID CORRECTORS LINEAR ACCELERATION
 #define ENABLE_XY_PID  true  // precompiler option to enable or not XY correction
-#define C_XY_KP        40.0 // 20.0  // [deg/gravity]
-#define C_XY_KI        0.0 // 1e-9 // [deg/gravity/us]
+#define C_XY_KP        40.0  // 40.0  // [deg/gravity]
+#define C_XY_KI        1e-3   // 1e-4 // [deg/gravity/us]
 
 // MOTOR SATURATION LEVEL [otherwise motor command is between 0 and 255]
 #define MOT_SAT_AVG    170 // motor avg saturation, must be lower than motor max saturation to keep some dynamics for flight control
@@ -53,6 +53,6 @@
 // MPU6050
 #define DEG2RAD            0.01745329252 // [rad/°] conversion from degree to radian
 //#define ACC_THRESH         0.01 // [units of g] threshold acceleration to remove eventual accelerometer drift
-#define FILTER_ACC_ACCEPT  0.2 // acceptance ratio of new linear acceleration measure
+#define FILTER_ACC_ACCEPT  0.3 // acceptance ratio of new linear acceleration measure
 
 #endif

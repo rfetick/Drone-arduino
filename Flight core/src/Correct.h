@@ -54,8 +54,8 @@ void UPDATE_CORRECTION(float dt){
 
   // Compute angles to correct for linear acceleration and put them into COMMAND angles
   #if ENABLE_XY_PID
-    COMMAND[1] = X_Corr.compute(0.0,STATE[6],0.0,dt);
-    COMMAND[2] = Y_Corr.compute(0.0,STATE[7],0.0,dt);
+    COMMAND[1] = X_Corr.compute(0.0,-STATE[6],0.0,dt);
+    COMMAND[2] = Y_Corr.compute(0.0,-STATE[7],0.0,dt);
   #endif
 
   // Compute motor command from the MPU6050 data

@@ -1,6 +1,6 @@
 /*
  * Get data from MPU6050 using TOCKN based library.
- * His library was slightly modified for my needs.
+ * His library was slightly modified for speed and stability.
  */
 
 #include <Arduino.h>
@@ -32,7 +32,7 @@ void UPDATE_MPU6050(){
   float ay =  mpu6050.getAccY();
   STATE[8] =  mpu6050.getAccZ();
   // Linear acceleration [units of gravity] from drone frame to reference ground frame
-  ax = ax*cos(STATE[1]*DEG2RAD) + STATE[8]*sin(STATE[1]*DEG2RAD);
+  ax = ax*cos(STATE[1]*DEG2RAD) - STATE[8]*sin(STATE[1]*DEG2RAD);
   ay = ay*cos(STATE[2]*DEG2RAD) - STATE[8]*sin(STATE[2]*DEG2RAD);
   // Low pass filter acceleration
   STATE[6] += FILTER_ACC_ACCEPT*(ax-STATE[6]);
